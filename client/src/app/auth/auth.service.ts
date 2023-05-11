@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 
-import { ParseService } from "../services/parseServer.service";
+import { ParseUserService } from "../services/parseUser.service";
 
 import { User, UserData } from "./user.model";
 
@@ -13,19 +13,19 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private router: Router, private parseService: ParseService) {}
+  constructor(private router: Router, private parseUserService: ParseUserService) {}
 
   async signup(username: string, password: string) {
-    await this.parseService.signup(username, password);
+    await this.parseUserService.signup(username, password);
   }
 
   async login(username: string, password: string) {
-    const user = await this.parseService.login(username, password);
+    const user = await this.parseUserService.login(username, password);
     await this.handleAuthentication(username, user.objectId, user.sessionToken);
   }
 
   autoLogin() {
-    const user = this.parseService.getCurrentUser();
+    const user = this.parseUserService.getCurrentUser();
     if (!user) return;
     const userData: UserData = {
       id: user.id,
@@ -41,7 +41,7 @@ export class AuthService {
   async logout() {
     this.user.next(null);
     this.router.navigate(["/auth"]);
-    await this.parseService.logout();
+    await this.parseUserService.logout();
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
