@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "paths":{
+      "crypto":["node_modules/crypto-browserify"],
+      "stream":["node_modules/stream-browserify"],
+      "os":["node_modules/os-browserify"],
+      "path":["node_modules/path-browserify"]
+    },
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+  },
+  "exclude": ["./scripts"]
+}

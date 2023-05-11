@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-xs-12">
+    <img
+      [src]="landmark.imagePath"
+      alt="{{ landmark.name }}"
+      class="img-responsive"
+      style="max-height: 300px;">
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ landmark.name }}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div
+      class="btn-group"
+      appDropdown>
+      <button
+        type="button"
+        class="btn btn-primary dropdown-toggle">
+        Manage Landmark <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a style="cursor: pointer;" (click)="onEditLandmark()">Edit Landmark</a></li>
+        <li><a style="cursor: pointer;" (click)="onDeleteLandmark()">Delete Landmark</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    {{ landmark.description }}
+  </div>
+</div>

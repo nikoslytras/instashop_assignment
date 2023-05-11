@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewLandmark()">New Landmark</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <app-landmark-item
+      *ngFor="let landmarkEl of landmarks; let i = index"
+      [landmark]="landmarkEl"
+      [index]="i"></app-landmark-item>
+  </div>
+</div>
+
