@@ -6,7 +6,7 @@ import { environment } from "../../environments/environment";
   providedIn: "root",
 })
 export class ParseService {
-  public Parse: any;
+  public Parse: Parse;
   constructor() {
     Parse.initialize(environment.APP_ID);
     Parse.serverURL = environment.SERVER_URL;

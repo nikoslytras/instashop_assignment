@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
-
+import { AuthService } from "../../auth/auth.service";
 import { Landmark } from "../landmark.model";
 import { LandmarkService } from "../landmark.service";
 
@@ -11,22 +11,30 @@ import { LandmarkService } from "../landmark.service";
   styleUrls: ["./landmark-list.component.css"],
 })
 export class LandmarkListComponent implements OnInit, OnDestroy {
+  isAuthenticated = false;
   landmarks: Landmark[];
-  subscription: Subscription;
+  private subscription: Subscription;
+  private userSub: Subscription;
 
   constructor(
     private landmarkService: LandmarkService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+    });
     this.subscription = this.landmarkService.landmarksChanged.subscribe(
       (landmarks: Landmark[]) => {
         this.landmarks = landmarks;
       }
     );
-    this.landmarks = this.landmarkService.getLandmarks();
+    this.landmarkService.getLandmarks().then((landmarks)=>{
+      this.landmarks = landmarks
+    });
   }
 
   onNewLandmark() {

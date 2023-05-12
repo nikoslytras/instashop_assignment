@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 
-import { ParseUserService } from "../services/parseUser.service";
+import { ParseUserService } from "../parseServer/parseUser.service";
 
 import { User, UserData } from "./user.model";
 
@@ -67,5 +67,9 @@ export class AuthService {
     const user = new User(userData);
     this.user.next(user);
     this.autoLogout(+environment.LOGOUT_TIMEOUT);
+  }
+
+  getCurrentUser(){
+    return this.parseUserService.getCurrentUser();
   }
 }

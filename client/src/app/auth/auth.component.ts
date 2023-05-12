@@ -3,10 +3,11 @@ import {
   ComponentFactoryResolver,
   ViewChild,
   OnDestroy,
+  OnInit,
 } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import { AlertComponent } from "../shared/alert/alert.component";
@@ -16,20 +17,26 @@ import { PlaceholderDirective } from "../shared/placeholder/placeholder.directiv
   selector: "app-auth",
   templateUrl: "./auth.component.html",
 })
-export class AuthComponent implements OnDestroy {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
   @ViewChild(PlaceholderDirective, { static: false })
   alertHost: PlaceholderDirective;
-
   private closeSub: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
+
+  ngOnInit() {
+    const currentUser = this.authService.getCurrentUser();
+    if(currentUser){
+      this.router.navigate(["/landmarks"]);
+    }
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;

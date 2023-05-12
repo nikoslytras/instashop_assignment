@@ -9,8 +9,6 @@ import { Landmark } from '../../landmark.model';
 })
 export class LandmarkItemComponent implements OnInit {
   @Input() landmark: Landmark;
-  @Input() index: number;
-
   ngOnInit() {
   }
 }

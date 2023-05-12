@@ -1,3 +1,4 @@
+<ng-template appPlaceholder></ng-template>
 <div class="row">
   <div class="col-xs-12">
     <form [formGroup]="landmarkForm" (ngSubmit)="onSubmit()">
@@ -13,11 +14,11 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Title</label>
             <input
               type="text"
-              id="name"
-              formControlName="name"
+              id="title"
+              formControlName="title"
               class="form-control">
           </div>
         </div>
@@ -43,12 +44,12 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="description">Description</label>
+            <label for="info">Info</label>
             <textarea
               type="text"
-              id="description"
+              id="info"
               class="form-control"
-              formControlName="description"
+              formControlName="info"
               rows="6"></textarea>
           </div>
         </div>

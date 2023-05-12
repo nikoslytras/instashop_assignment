@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-
-import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
+import { LandmarkService } from "../landmark/landmark.service";
 
 @Component({
   selector: 'app-header',
@@ -11,26 +10,17 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   private userSub: Subscription;
+  searchText: string
 
   constructor(
-    private dataStorageService: DataStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private landmarkService: LandmarkService
   ) {}
 
   ngOnInit() {
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
-      console.log(!user);
-      console.log(!!user);
     });
-  }
-
-  onSaveData() {
-    this.dataStorageService.storeLandmarks();
-  }
-
-  onFetchData() {
-    this.dataStorageService.fetchLandmarks().subscribe();
   }
 
   onLogout() {
@@ -39,5 +29,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
+  }
+
+  async onSearch(){
+    await this.landmarkService.searchLandmarks(this.searchText);
   }
 }

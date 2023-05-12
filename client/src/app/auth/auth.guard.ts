@@ -1,6 +1,4 @@
 import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
   Router,
   UrlTree
 } from '@angular/router';
@@ -14,10 +12,7 @@ import { AuthService } from './auth.service';
 export class AuthGuard {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    router: RouterStateSnapshot
-  ):
+  canActivate():
     | boolean
     | UrlTree
     | Promise<boolean | UrlTree>
@@ -26,8 +21,8 @@ export class AuthGuard {
       take(1),
       map(user => {
         const isAuth = !!user;
-        if (isAuth) {
-          return this.router.createUrlTree(['/landmarks']);
+        if (!isAuth) {
+          return this.router.createUrlTree(['/auth']);
         }
         return true;
       })
