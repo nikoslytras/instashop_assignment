@@ -18,7 +18,6 @@ const environmentFileContent = `
 export const environment = {
    production: ${isProduction},
    APP_ID: "${process.env.APP_ID}",
-   MASTER_KEY: "${process.env.MASTER_KEY}",
    SERVER_URL: "${process.env.SERVER_URL}",
    LOGOUT_TIMEOUT: "${process.env.LOGOUT_TIMEOUT}",
 };

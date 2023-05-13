@@ -16,6 +16,10 @@ export class LandmarkListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private userSub: Subscription;
 
+  currentPage = 1;
+  pages = [];
+  totalPages = 0;
+
   constructor(
     private landmarkService: LandmarkService,
     private router: Router,
@@ -24,17 +28,37 @@ export class LandmarkListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userSub = this.authService.user.subscribe(user => {
+    this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !!user;
     });
     this.subscription = this.landmarkService.landmarksChanged.subscribe(
       (landmarks: Landmark[]) => {
         this.landmarks = landmarks;
+        this.calculatePages();
       }
     );
-    this.landmarkService.getLandmarks().then((landmarks)=>{
-      this.landmarks = landmarks
+    this.landmarkService.initializeLandmarks().then((landmarks)=>{
+      this.landmarks = landmarks;
+      this.calculatePages();
     });
+  }
+
+  async calculatePages() {
+    const count = await this.landmarkService.count();
+    let pages = Math.ceil(count / 3);
+    this.pages = [];
+    for (let index = 1; index <= pages; index++) {
+      this.pages.push(index);
+    }
+    this.totalPages = this.pages.length;
+  }
+
+  async goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.currentPage = pageNumber;
+      await this.landmarkService.getLandmarks((pageNumber - 1) * 3);
+      this.router.navigate(["/landmarks"]);
+    }
   }
 
   onNewLandmark() {

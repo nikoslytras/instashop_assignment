@@ -26,6 +26,9 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
   alertHost: PlaceholderDirective;
   private closeSub: Subscription;
 
+  selectedFile: any;
+  fileName: string
+
   constructor(
     private route: ActivatedRoute,
     private landmarkService: LandmarkService,
@@ -35,6 +38,8 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
+      this.selectedFile = undefined;
+      this.fileName = undefined;
       this.id = params["id"];
       this.editMode = params["id"] != null;
       this.initForm();
@@ -43,6 +48,10 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     try {
+      if (this.selectedFile) {
+        this.landmarkForm.value.file = this.selectedFile;
+        this.landmarkForm.value.fileName = this.fileName;
+      }
       if (this.editMode) {
         await this.landmarkService.updateLandmark(
           this.id,
@@ -66,15 +75,16 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
 
   private initForm() {
     let landmarkTitle = "";
-    let landmarkImagePath = "";
     let landmarkInfo = "";
+    let landmarkLink = "";
 
     if (this.editMode) {
       const landmark = this.landmarkService.getLandmark(this.id);
       if (!landmark) this.router.navigate(["/landmarks"]);
       landmarkTitle = landmark.title;
-      landmarkImagePath = landmark.imagePath;
       landmarkInfo = landmark.info;
+      landmarkLink = landmark.link;
+      this.fileName = landmark.fileName;
     }
 
     this.landmarkForm = new FormGroup({
@@ -82,8 +92,8 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.maxLength(10),
       ]),
-      imagePath: new FormControl(landmarkImagePath, Validators.required),
       info: new FormControl(landmarkInfo, Validators.required),
+      link: new FormControl(landmarkLink, Validators.required)
     });
   }
 
@@ -104,4 +114,11 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
       this.onCancel();
     });
   }
+
+  onFileSelected(event) {
+    if(event.target.files && event.target.files.length){
+      this.selectedFile = event.target.files[0];
+      this.fileName = this.selectedFile.name;
+    }
+  };
 }

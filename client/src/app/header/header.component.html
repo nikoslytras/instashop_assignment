@@ -1,31 +1,89 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" style="background-color: rgba(0, 0, 0, 0.349);">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggleTarget" aria-expanded="false">
+      <button
+        type="button"
+        class="navbar-toggle collapsed"
+        data-toggle="collapse"
+        data-target="#toggleTarget"
+        aria-expanded="false"
+      >
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" routerLink="/">Landmarks Book</a>
+      <a class="navbar-brand" style="color: white;" routerLink="/">Landmarks Book</a>
     </div>
     <div class="collapse navbar-collapse" id="toggleTarget">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
-          <a routerLink="/landmarks">Landmarks</a>
+          <a style="color: black;" routerLink="/landmarks">Landmarks</a>
         </li>
         <li routerLinkActive="active" *ngIf="!isAuthenticated">
-          <a routerLink="/auth">Login</a>
+          <a style="color: black;" routerLink="/auth">Login</a>
         </li>
         <li routerLinkActive="active" *ngIf="isAuthenticated">
-          <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
+          <a style="cursor: pointer" (click)="onLogout()">Logout</a>
         </li>
       </ul>
       <form class="navbar-form navbar-left">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" (change)='searchText=$event.target.value'>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search"
+            (change)="searchText = $event.target.value"
+          />
         </div>
-        <button type="submit" class="btn btn-default" (click)="onSearch()">Submit</button>
+        <!-- Order By field -->
+        <div class="btn-group" appDropdown style="margin-left: 5px">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+          >
+            Order By {{ sortBy | titlecase }}
+          </button>
+          <ul class="dropdown-menu">
+            <li *ngFor="let option of options">
+              <a style="cursor: pointer" (click)="sortBy = option.value"
+                >{{ option.label }}
+              </a>
+            </li>
+          </ul>
+          <!-- Search Order -->
+        </div>
+        <div class="btn-group" appDropdown style="margin-left: 5px">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+          >
+            {{ ascendingOrder ? "Ascending" : "Descending" }}
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a style="cursor: pointer" (click)="sortDataAccenting()">
+                Ascending
+              </a>
+            </li>
+            <li>
+              <a style="cursor: pointer" (click)="sortDataDescending()">
+                Descending
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- submit button -->
+        <button
+          style="margin-left: 5px"
+          type="submit"
+          class="btn btn-success"
+          (click)="onSearch()"
+        >
+          Submit
+        </button>
       </form>
     </div>
   </div>

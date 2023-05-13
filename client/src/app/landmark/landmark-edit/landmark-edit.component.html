@@ -7,38 +7,39 @@
           <button
             type="submit"
             class="btn btn-success"
-            [disabled]="!landmarkForm.valid">Save</button>
-          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+            [disabled]="!landmarkForm.valid || !fileName"
+          >
+            Save
+          </button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">
+            Cancel
+          </button>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="name">Title</label>
+            <label for="title">Title</label>
             <input
               type="text"
               id="title"
               formControlName="title"
-              class="form-control">
+              class="form-control"
+            />
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="imagePath">Image URL</label>
+            <label for="name">Link to landmark</label>
             <input
-              type="text"
-              id="imagePath"
-              formControlName="imagePath"
+              type="url"
+              id="link"
+              formControlName="link"
               class="form-control"
-              #imagePath>
+            />
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <img [src]="imagePath.value" class="img-responsive">
         </div>
       </div>
       <div class="row">
@@ -50,10 +51,22 @@
               id="info"
               class="form-control"
               formControlName="info"
-              rows="6"></textarea>
+              rows="6"
+            ></textarea>
           </div>
         </div>
       </div>
     </form>
+    <div class="row">
+      <input
+        style="display: none"
+        type="file"
+        (change)="onFileSelected($event)"
+        #fileInput
+        accept="image/*"
+      />
+      <h4 *ngIf="fileName"> The Selected File Is: {{ fileName }} </h4>
+      <button class="btn btn-success" (click)="fileInput.click()">Select File</button>
+    </div>
   </div>
 </div>
