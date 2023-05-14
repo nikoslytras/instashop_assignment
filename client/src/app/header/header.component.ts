@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { LandmarkService } from "../landmark/landmark.service";
@@ -18,9 +18,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Updated At', value: '_updated_at' },
     { label: 'Created At', value: '_created_at' },
   ];
+  isCollapsed = true;
   constructor(
     private authService: AuthService,
-    private landmarkService: LandmarkService
+    private landmarkService: LandmarkService,
+    private el: ElementRef
   ) {}
 
   ngOnInit() {
@@ -50,5 +52,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   sortDataDescending() {
     this.ascendingOrder = false;
+  }
+
+  onToggle(){
+    console.log(this.el.nativeElement);
+    
   }
 }

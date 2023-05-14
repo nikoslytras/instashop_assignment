@@ -1,0 +1,12 @@
+{
+  "name": "instashop_assignment",
+  "version": "1.0.0",
+  "scripts": {
+    "install_client": "cd client && npm i && cd ../",
+    "install_parse": "cd parse-server-example && npm i && cd ../",
+    "init_envs": "cp ./.env ./client && cp ./.env ./parse-server-example",
+    "install": "npm run install_client && npm run install_parse npm run init_envs",
+    "start_client": "cd client npm run start cd ../",
+    "start_parse": "cd parse-server-example && npm run start && cd ../"
+  }
+}

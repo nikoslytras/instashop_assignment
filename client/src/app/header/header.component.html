@@ -1,21 +1,19 @@
 <nav class="navbar navbar-default" style="background-color: rgba(0, 0, 0, 0.349);">
   <div class="container-fluid">
     <div class="navbar-header">
+      <a class="navbar-brand" style="color: white;" routerLink="/">Landmarks Book</a>
       <button
         type="button"
-        class="navbar-toggle collapsed"
-        data-toggle="collapse"
-        data-target="#toggleTarget"
-        aria-expanded="false"
+        class="navbar-toggle"
+        (click)="isCollapsed = !isCollapsed"
       >
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" style="color: white;" routerLink="/">Landmarks Book</a>
     </div>
-    <div class="collapse navbar-collapse" id="toggleTarget">
+    <div class="navbar-collapse" [ngClass]="isCollapsed ? 'collapse' : ''">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
           <a style="color: black;" routerLink="/landmarks">Landmarks</a>
