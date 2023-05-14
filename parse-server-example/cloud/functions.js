@@ -77,8 +77,8 @@ Parse.Cloud.define('getLandmarks', async req => {
 });
 
 Parse.Cloud.define('createLandmark', async req => {
-  const sessionToken_ = req.headers['x-parse-session-token'];
-  if (!sessionToken_) {
+  const sessionToken = req.headers['x-parse-session-token'];
+  if (!sessionToken) {
     throw new Parse.Error(401, 'not authorized');
   }
   const Landmark = Parse.Object.extend('Landmark');
@@ -87,7 +87,7 @@ Parse.Cloud.define('createLandmark', async req => {
   if (!landmarkData) {
     throw new Parse.Error(400, 'landmarkData not found');
   }
-  const newLandmark = await landmark.save({ ...landmarkData });
+  const newLandmark = await landmark.save({ ...landmarkData }, { sessionToken });
   return {
     id: newLandmark.id,
   };
@@ -109,9 +109,6 @@ Parse.Cloud.define('updateLandMark', async req => {
   if (!landmark) {
     throw new Parse.Error(400, `no landmark found with id: ${objectId}`);
   }
-  for (const key in dataToUpdate) {
-    landmark.set(key, dataToUpdate[key]);
-  }
-  const response = await landmark.save(null, { sessionToken });
+  const response = await landmark.save({ ...dataToUpdate }, { sessionToken });
   return response;
 });
