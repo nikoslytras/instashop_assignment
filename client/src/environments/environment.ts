@@ -1,4 +1,7 @@
 
 export const environment = {
-   production: false
+   production: false,
+   APP_ID: "undefined",
+   SERVER_URL: "undefined",
+   LOGOUT_TIMEOUT: "undefined",
 };
