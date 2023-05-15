@@ -21,7 +21,6 @@ export class ParseLandmarksService extends ParseService {
   async createLandMark(sessionToken: string, landmarkData: LandmarkData) {
     this.checkFileSize(landmarkData.file);
     const landmark = new this.Landmark();
-    debugger;
     const parseFile = new this.Parse.File(
       landmarkData.fileName,
       landmarkData.file
@@ -53,8 +52,8 @@ export class ParseLandmarksService extends ParseService {
     query.equalTo("objectId", id);
     const landmark = await query.first();
     if (!landmark) return;
-    this.checkFileSize(landmarkData.file);
     if (landmarkData.file) {
+      this.checkFileSize(landmarkData.file);
       const parseFile = new this.Parse.File(
         landmarkData.fileName,
         landmarkData.file

@@ -130,7 +130,6 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
    * Handles the file selection.
    */
   onFileSelected(event: any) {
-    debugger;
     if (event.target.files && event.target.files.length) {
       this.selectedFile = event.target.files[0];
       const fileSizeInMB = this.selectedFile.size / (1024 * 1024);
