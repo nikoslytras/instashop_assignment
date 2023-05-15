@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
 import { Landmark } from "../landmark.model";
 import { LandmarkService } from "../landmark.service";
+import { QUERY_LIMIT } from "src/app/shared/constants";
 
 @Component({
   selector: "app-landmark-list",
@@ -13,8 +14,10 @@ import { LandmarkService } from "../landmark.service";
 export class LandmarkListComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   landmarks: Landmark[];
-  private subscription: Subscription;
+  private getSubscription: Subscription;
+  private searchSubscription: Subscription;
   private userSub: Subscription;
+  isLoading = false;
 
   currentPage = 1;
   pages = [];
@@ -31,21 +34,35 @@ export class LandmarkListComponent implements OnInit, OnDestroy {
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !!user;
     });
-    this.subscription = this.landmarkService.landmarksChanged.subscribe(
+    this.getSubscription = this.landmarkService.landmarksChanged.subscribe(
       (landmarks: Landmark[]) => {
         this.landmarks = landmarks;
-        this.calculatePages();
+        this.calculateGetPages();
       }
     );
-    this.landmarkService.initializeLandmarks().then((landmarks)=>{
+    this.searchSubscription =
+      this.landmarkService.landmarksSearchResultChanged.subscribe(
+        (landmarks: Landmark[]) => {
+          this.landmarks = landmarks;
+          this.currentPage = 1;
+          this.pages = [];
+          this.totalPages = 0;
+        }
+      );
+    this.isLoading = true;
+    this.landmarkService.initializeLandmarks().then((landmarks) => {
       this.landmarks = landmarks;
-      this.calculatePages();
+      this.calculateGetPages();
+      this.isLoading = false;
     });
   }
 
-  async calculatePages() {
+  /**
+   * Calculates the number of pagination pages.
+   */
+  async calculateGetPages() {
     const count = await this.landmarkService.count();
-    let pages = Math.ceil(count / 3);
+    let pages = Math.ceil(count / QUERY_LIMIT);
     this.pages = [];
     for (let index = 1; index <= pages; index++) {
       this.pages.push(index);
@@ -53,19 +70,29 @@ export class LandmarkListComponent implements OnInit, OnDestroy {
     this.totalPages = this.pages.length;
   }
 
+  /**
+   * Handles the click of a specific page.
+   */
   async goToPage(pageNumber: number) {
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
-      await this.landmarkService.getLandmarks((pageNumber - 1) * 3);
+      this.isLoading = true;
+      await this.landmarkService.getLandmarks((pageNumber - 1) * QUERY_LIMIT);
+      this.isLoading = false;
       this.router.navigate(["/landmarks"]);
     }
   }
 
+  /**
+   * Triggers the new landmark process.
+   */
   onNewLandmark() {
     this.router.navigate(["new"], { relativeTo: this.route });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.getSubscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }

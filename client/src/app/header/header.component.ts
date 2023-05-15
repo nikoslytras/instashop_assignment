@@ -14,9 +14,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   sortBy: string;
   ascendingOrder: boolean;
   options = [
-    { label: 'Title', value: 'title' },
-    { label: 'Updated At', value: '_updated_at' },
-    { label: 'Created At', value: '_created_at' },
+    { label: "Title", value: "title" },
+    { label: "Updated At", value: "_updated_at" },
+    { label: "Created At", value: "_created_at" },
   ];
   isCollapsed = true;
   constructor(
@@ -42,8 +42,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
+  /**
+   * Triggers the search process
+   */
   async onSearch() {
-    await this.landmarkService.searchLandmarks(this.searchText, this.sortBy, this.ascendingOrder);
+    await this.landmarkService.searchLandmarks(
+      this.searchText,
+      this.sortBy,
+      this.ascendingOrder
+    );
   }
 
   sortDataAccenting() {
@@ -52,10 +59,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   sortDataDescending() {
     this.ascendingOrder = false;
-  }
-
-  onToggle(){
-    console.log(this.el.nativeElement);
-    
   }
 }

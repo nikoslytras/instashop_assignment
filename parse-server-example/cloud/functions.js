@@ -13,6 +13,7 @@ Parse.Cloud.beforeSave('Test', () => {
   throw new Parse.Error(9001, 'Saving test objects is not available.');
 });
 
+// FUNCTION FOR TESTING REASONS
 Parse.Cloud.define('login', async req => {
   const { username, password } = req.params;
   // throw error if username or password is not provided
@@ -29,6 +30,7 @@ Parse.Cloud.define('login', async req => {
   };
 });
 
+// FUNCTION FOR TESTING REASONS
 Parse.Cloud.define('signup', async req => {
   const { username, password } = req.params;
   if (!username || !password) {
@@ -40,6 +42,7 @@ Parse.Cloud.define('signup', async req => {
   };
 });
 
+// FUNCTION FOR TESTING REASONS
 async function getLandmarks() {
   const query = new Parse.Query('Landmark');
   const landmarks = await query.find();
@@ -58,6 +61,7 @@ async function getLandmarks() {
   });
 }
 
+// FUNCTION FOR TESTING REASONS
 async function getLandmark(objectId) {
   const query = new Parse.Query('Landmark');
   query.equalTo('objectId', objectId);
@@ -69,6 +73,7 @@ async function getLandmark(objectId) {
   return landmark;
 }
 
+// FUNCTION FOR TESTING REASONS
 Parse.Cloud.define('getLandmarks', async req => {
   const landmarks = req.params.objectId
     ? await getLandmark(req.params.objectId)
@@ -76,6 +81,7 @@ Parse.Cloud.define('getLandmarks', async req => {
   return landmarks;
 });
 
+// FUNCTION FOR TESTING REASONS
 Parse.Cloud.define('createLandmark', async req => {
   const sessionToken = req.headers['x-parse-session-token'];
   if (!sessionToken) {
@@ -87,12 +93,18 @@ Parse.Cloud.define('createLandmark', async req => {
   if (!landmarkData) {
     throw new Parse.Error(400, 'landmarkData not found');
   }
+  const parseFile = new this.Parse.File(
+    landmarkData.fileName,
+    landmarkData.file
+  );
+  landmarkData.file = parseFile;
   const newLandmark = await landmark.save({ ...landmarkData }, { sessionToken });
   return {
     id: newLandmark.id,
   };
 });
 
+// FUNCTION FOR TESTING REASONS
 Parse.Cloud.define('updateLandMark', async req => {
   const sessionToken = req.headers['x-parse-session-token'];
   if (!sessionToken) {
@@ -108,6 +120,13 @@ Parse.Cloud.define('updateLandMark', async req => {
   const landmark = await query.first();
   if (!landmark) {
     throw new Parse.Error(400, `no landmark found with id: ${objectId}`);
+  }
+  if(dataToUpdate.file){
+    const parseFile = new this.Parse.File(
+      dataToUpdate.fileName,
+      dataToUpdate.file
+    );
+    dataToUpdate.file = parseFile;
   }
   const response = await landmark.save({ ...dataToUpdate }, { sessionToken });
   return response;

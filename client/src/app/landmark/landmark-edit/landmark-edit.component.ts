@@ -11,6 +11,7 @@ import { PlaceholderDirective } from "../../shared/placeholder/placeholder.direc
 import { AlertComponent } from "../../shared/alert/alert.component";
 import { LandmarkService } from "../landmark.service";
 import { Subscription } from "rxjs";
+import { FILE_MAX_SIZE } from "src/app/shared/constants";
 
 @Component({
   selector: "app-landmark-edit",
@@ -27,7 +28,7 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
   private closeSub: Subscription;
 
   selectedFile: any;
-  fileName: string
+  fileName: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +47,9 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Handles the submit of the form
+   */
   async onSubmit() {
     try {
       if (this.selectedFile) {
@@ -73,6 +77,9 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
     this.router.navigate(["../"], { relativeTo: this.route });
   }
 
+  /**
+   * Initializes the form.
+   */
   private initForm() {
     let landmarkTitle = "";
     let landmarkInfo = "";
@@ -90,10 +97,10 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
     this.landmarkForm = new FormGroup({
       title: new FormControl(landmarkTitle, [
         Validators.required,
-        Validators.maxLength(10),
+        Validators.maxLength(15),
       ]),
       info: new FormControl(landmarkInfo, Validators.required),
-      link: new FormControl(landmarkLink, Validators.required)
+      link: new FormControl(landmarkLink, Validators.required),
     });
   }
 
@@ -103,6 +110,10 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Creates the error popup
+   * @param {string} message The error to be displayed.
+   */
   private showErrorAlert(message: string) {
     const alertCmpFactory =
       this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
@@ -115,10 +126,21 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFileSelected(event) {
-    if(event.target.files && event.target.files.length){
+  /**
+   * Handles the file selection.
+   */
+  onFileSelected(event: any) {
+    debugger;
+    if (event.target.files && event.target.files.length) {
       this.selectedFile = event.target.files[0];
-      this.fileName = this.selectedFile.name;
+      const fileSizeInMB = this.selectedFile.size / (1024 * 1024);
+      if (fileSizeInMB > FILE_MAX_SIZE) {
+        this.fileName =
+          this.selectedFile.name +
+          " WARNING: file size should be less than 5MB";
+      } else {
+        this.fileName = this.selectedFile.name;
+      }
     }
-  };
+  }
 }

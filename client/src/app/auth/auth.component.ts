@@ -28,12 +28,12 @@ export class AuthComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngOnInit() {
     const currentUser = this.authService.getCurrentUser();
-    if(currentUser){
+    if (currentUser) {
       this.router.navigate(["/landmarks"]);
     }
   }
@@ -42,6 +42,10 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  /**
+   * Function triggered when the form is submitted.
+   * @param {NgForm} form The form.
+   */
   async onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
@@ -63,7 +67,6 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.showErrorAlert(errorMessage);
         this.isLoading = false;
       }
-
     } else {
       try {
         await this.authService.signup(username, password);
@@ -75,7 +78,6 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.error = errorMessage;
         this.showErrorAlert(errorMessage);
         this.isLoading = false;
-        
       }
     }
   }
@@ -86,8 +88,13 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Creates the error popup
+   * @param {string} message The error to be displayed.
+   */
   private showErrorAlert(message: string) {
-    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const alertCmpFactory =
+      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
     const hostViewContainerRef = this.alertHost.viewContainerRef;
     hostViewContainerRef.clear();
 
