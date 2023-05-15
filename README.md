@@ -18,3 +18,6 @@ To run the services in the root of the folder hit the following commands:
 - To create, edit and delete a landmark you need to sing up and then login.
 
 For any questions you can contact with me, thank you very much for your time.
+
+## Parse Dashboard
+The parse dashboard is up and running on ``{parse_server_url}/dashboard`` (e.g. http://localhost:5005/dashboard)
