@@ -93,11 +93,10 @@ Parse.Cloud.define('createLandmark', async req => {
   if (!landmarkData) {
     throw new Parse.Error(400, 'landmarkData not found');
   }
-  const parseFile = new this.Parse.File(
-    landmarkData.fileName,
-    landmarkData.file
-  );
-  landmarkData.file = parseFile;
+  const parseFile = new this.Parse.File(landmarkData.fileName, landmarkData.file);
+  const parseFileRes = await parseFile.save();
+  landmarkData.imagePath = parseFileRes.url();
+  delete landmarkData.file;
   const newLandmark = await landmark.save({ ...landmarkData }, { sessionToken });
   return {
     id: newLandmark.id,
@@ -121,12 +120,12 @@ Parse.Cloud.define('updateLandMark', async req => {
   if (!landmark) {
     throw new Parse.Error(400, `no landmark found with id: ${objectId}`);
   }
-  if(dataToUpdate.file){
-    const parseFile = new this.Parse.File(
-      dataToUpdate.fileName,
-      dataToUpdate.file
-    );
+  if (dataToUpdate.file) {
+    const parseFile = new this.Parse.File(dataToUpdate.fileName, dataToUpdate.file);
     dataToUpdate.file = parseFile;
+    const parseFileRes = await parseFile.save();
+    dataToUpdate.imagePath = parseFileRes.url();
+    delete dataToUpdate.file;
   }
   const response = await landmark.save({ ...dataToUpdate }, { sessionToken });
   return response;
