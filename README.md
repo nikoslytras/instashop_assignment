@@ -21,3 +21,18 @@ For any questions you can contact with me, thank you very much for your time.
 
 ## Parse Dashboard
 The parse dashboard is up and running on ``{parse_server_url}/dashboard`` (e.g. http://localhost:5005/dashboard)
+
+## Sample Landmark in DB
+
+```JSON
+{
+    "_id" : "50OxxYZ6vM",
+    "title" : "eferferferferfe",
+    "info" : "https://google.com",
+    "link" : "https://google.com",
+    "file" : "72de3e9a57f75fd64da0697216da81ec_download.jpeg",
+    "fileName" : "download.jpeg",
+    "_created_at" : ISODate("2023-05-19T10:17:35.310+0000"),
+    "_updated_at" : ISODate("2023-05-19T10:17:35.310+0000")
+}
+```
