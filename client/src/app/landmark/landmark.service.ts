@@ -62,12 +62,13 @@ export class LandmarkService {
    * Creates a new landmark in DB.
    * @param {LandmarkData} landmark The landmarks's data.
    */
-  async addLandmark(landmark: LandmarkData) {
+  async addLandmark(landmark: LandmarkData, file: any) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) throw new Error("Not authorized");
     await this.parseLandmarksService.createLandMark(
       currentUser.getSessionToken(),
-      landmark
+      landmark,
+      file
     );
     await this.getLandmarks();
   }
@@ -78,13 +79,14 @@ export class LandmarkService {
    * @param {id} id The landmark's id.
    * @param {LandmarkData} dataToUpdate The landmarks's data.
    */
-  async updateLandmark(id: string, dataToUpdate: LandmarkData) {
+  async updateLandmark(id: string, dataToUpdate: LandmarkData, file: any) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) throw new Error("Not authorized");
     await this.parseLandmarksService.updateLandmark(
       currentUser.getSessionToken(),
       id,
-      dataToUpdate
+      dataToUpdate,
+      file
     );
     await this.getLandmarks();
   }

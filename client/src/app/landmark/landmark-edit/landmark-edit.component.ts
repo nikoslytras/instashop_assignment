@@ -53,16 +53,16 @@ export class LandmarkEditComponent implements OnInit, OnDestroy {
   async onSubmit() {
     try {
       if (this.selectedFile) {
-        this.landmarkForm.value.file = this.selectedFile;
         this.landmarkForm.value.fileName = this.fileName;
       }
       if (this.editMode) {
         await this.landmarkService.updateLandmark(
           this.id,
-          this.landmarkForm.value
+          this.landmarkForm.value,
+          this.selectedFile
         );
       } else {
-        await this.landmarkService.addLandmark(this.landmarkForm.value);
+        await this.landmarkService.addLandmark(this.landmarkForm.value, this.selectedFile);
       }
       this.onCancel();
     } catch (error) {

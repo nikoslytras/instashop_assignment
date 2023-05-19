@@ -1,9 +1,9 @@
 export interface LandmarkData {
   title: string;
   info: string;
-  file: any;
   fileName: string;
   link: string;
+  imagePath: string;
 }
 
 export class Landmark {
@@ -12,7 +12,6 @@ export class Landmark {
   public info: string;
   public imagePath: string;
   public shortInfo: string;
-  public file: any;
   public fileName: string;
   public link: string;
 
@@ -20,10 +19,9 @@ export class Landmark {
     this.id = id;
     this.title = landmarkData.title;
     this.info = landmarkData.info;
-    this.file = landmarkData.file;
     this.fileName = landmarkData.fileName;
     this.link = landmarkData.link;
-    this.imagePath = this.file.url();
+    this.imagePath = landmarkData.imagePath;
     if (this.info.length > 20) {
       this.shortInfo = this.info.slice(0, 20) + "...";
     } else {

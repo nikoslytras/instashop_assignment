@@ -18,14 +18,16 @@ export class ParseLandmarksService extends ParseService {
    * @param {string} sessionToken The user's session token
    * @param {LandmarkData} landmarkData The landmarks's data.
    */
-  async createLandMark(sessionToken: string, landmarkData: LandmarkData) {
-    this.checkFileSize(landmarkData.file);
+  async createLandMark(
+    sessionToken: string,
+    landmarkData: LandmarkData,
+    file: any
+  ) {
+    this.checkFileSize(file);
     const landmark = new this.Landmark();
-    const parseFile = new this.Parse.File(
-      landmarkData.fileName,
-      landmarkData.file
-    );
-    landmarkData.file = parseFile;
+    const parseFile = new this.Parse.File(landmarkData.fileName, file);
+    const parseFileRes = await parseFile.save();
+    landmarkData.imagePath = parseFileRes.url();
     await landmark.save({ ...landmarkData }, { sessionToken });
   }
 
@@ -46,19 +48,18 @@ export class ParseLandmarksService extends ParseService {
   async updateLandmark(
     sessionToken: string,
     id: string,
-    landmarkData: LandmarkData
+    landmarkData: LandmarkData,
+    file: any
   ) {
     const query = this.createNewQuery();
     query.equalTo("objectId", id);
     const landmark = await query.first();
     if (!landmark) return;
-    if (landmarkData.file) {
-      this.checkFileSize(landmarkData.file);
-      const parseFile = new this.Parse.File(
-        landmarkData.fileName,
-        landmarkData.file
-      );
-      landmarkData.file = parseFile;
+    if (file) {
+      this.checkFileSize(file);
+      const parseFile = new this.Parse.File(landmarkData.fileName, file);
+      const parseFileRes = await parseFile.save();
+      landmarkData.imagePath = parseFileRes.url();
     }
     await landmark.save({ ...landmarkData }, { sessionToken });
   }
@@ -137,11 +138,12 @@ export class ParseLandmarksService extends ParseService {
    * @returns {Landmark[]} The landmarks.
    */
   parseLandmarks(landmarks: any): Landmark[] {
-    return landmarks.map(({ id, attributes }) => {
+    return landmarks.map((landmark) => {
+      const { id, attributes } = landmark;
       return new Landmark(id, {
         title: attributes.title,
         info: attributes.info,
-        file: attributes.file,
+        imagePath: attributes.imagePath,
         fileName: attributes.fileName,
         link: attributes.link,
       });
