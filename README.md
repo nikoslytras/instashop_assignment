@@ -26,13 +26,13 @@ The parse dashboard is up and running on ``{parse_server_url}/dashboard`` (e.g. 
 
 ```JSON
 {
-    "_id" : "50OxxYZ6vM",
-    "title" : "eferferferferfe",
-    "info" : "https://google.com",
-    "link" : "https://google.com",
-    "file" : "72de3e9a57f75fd64da0697216da81ec_download.jpeg",
+    "_id" : "Cij3zS5utu",
+    "title" : "nikos",
+    "info" : "edwdwefwfewfeffffffffffffffff",
+    "link" : "https://www.google.com",
     "fileName" : "download.jpeg",
-    "_created_at" : ISODate("2023-05-19T10:17:35.310+0000"),
-    "_updated_at" : ISODate("2023-05-19T10:17:35.310+0000")
+    "imagePath" : "http://localhost:5005/parse/files/NqqPKd9Mzzdk0Es6P7NdzXOXNb4tsqdq6Q8p0cZi/4e57b650506fc757cf602ad262ec4477_download.jpeg",
+    "_created_at" : ISODate("2023-05-19T11:11:15.696+0000"),
+    "_updated_at" : ISODate("2023-05-19T11:11:45.638+0000")
 }
 ```
