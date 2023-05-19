@@ -49,10 +49,13 @@ export class AuthService {
       sessionToken: user.getSessionToken(),
       username: user.getUsername(),
     };
-    console.log(JSON.stringify(userData));
-
-    this.user.next(new User(userData));
-    this.autoLogout(+environment.LOGOUT_TIMEOUT!);
+    this.parseUserService.become(userData.sessionToken).then(()=>{
+      this.user.next(new User(userData));
+      this.autoLogout(+environment.LOGOUT_TIMEOUT!);
+    }).catch((err)=>{
+      console.log(err.message);
+      this.logout();
+    })
   }
 
   /**

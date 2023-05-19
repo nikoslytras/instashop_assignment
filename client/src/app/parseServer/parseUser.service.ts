@@ -53,4 +53,8 @@ export class ParseUserService extends ParseService {
   getCurrentUser() {
     return this.Parse.User.current();
   }
+
+  async become(sessionToken: string){
+    return this.Parse.User.become(sessionToken)
+  }
 }
